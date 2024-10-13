@@ -30,7 +30,7 @@ public class BettingTicketStack
         }
     }
 
-    public BettingTicket TakeTopTicket()
+    public BettingTicket TryTakeTopTicket()
     {
         if (_stack.TryPop(out var topTicket))
         {

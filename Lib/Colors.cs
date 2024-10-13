@@ -2,9 +2,11 @@
 
 public enum Colors
 {
-    Red,
-    Green,
-    Blue,
-    Purple,
-    Yellow
+    White = -2,
+    Black = -1,
+    Red = 1,
+    Green = 2,
+    Blue = 3,
+    Purple = 4,
+    Yellow = 5
 }

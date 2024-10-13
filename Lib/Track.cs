@@ -1,6 +1,6 @@
 ﻿namespace Lib;
 
-public class Track
+public class Track(IReadOnlyList<TrackSpace> trackSpaces)
 {
-    public List<TrackSpace> TrackSpaces { get; }
+    public IReadOnlyList<TrackSpace> TrackSpaces { get; } = trackSpaces;
 }
