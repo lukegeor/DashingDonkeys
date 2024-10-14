@@ -27,9 +27,20 @@ public abstract class Camel
 
     public void MoveForward(TrackSpace newTrackSpace, bool originalMove = true)
     {
+        // If this is the original camel being moved:
+        // - Don't need new trackspace yet
+        //   - Set the below camel's above pointer to null
+        //   - If this camel was the old trackspace's bottom camel, set the old trackspace's bottom camel to null
+        // - Need the new trackspace for
+        //   - Set the camel below pointer to the new track space's top camel
+        //   - Set the top camel on the new space's above pointer to this camel
+        //   - If the new trackspace's bottom camel pointer was null, set it to this camel
+
+        // For all moves, set this camel's trackspace to the new trackspace, and fire the event.
+
         if (originalMove)
         {
-            if (CamelBelowThisCamel?.CamelOnTopOfThisCamel is not null)
+            if (CamelBelowThisCamel is not null)
             {
                 CamelBelowThisCamel.CamelOnTopOfThisCamel = null;
             }
@@ -38,21 +49,25 @@ public abstract class Camel
             {
                 TrackSpace.BottomCamel = null;
             }
+
+            var oldTopCamelOnNewSpace = newTrackSpace.GetTopCamel();
+
+            CamelBelowThisCamel = oldTopCamelOnNewSpace;
+
+            if (oldTopCamelOnNewSpace is not null)
+            {
+                oldTopCamelOnNewSpace.CamelOnTopOfThisCamel = this;
+            }
+
+            if (newTrackSpace.BottomCamel is null)
+            {
+                newTrackSpace.BottomCamel = this;
+            }
         }
 
         TrackSpace = newTrackSpace;
         CamelOnTopOfThisCamel?.MoveForward(newTrackSpace, false);
-
-        if (originalMove)
-        {
-            var oldTopCamel = newTrackSpace.GetTopCamel();
-            if (oldTopCamel is not null)
-            {
-                oldTopCamel.CamelOnTopOfThisCamel = this;
-            }
-            CamelBelowThisCamel = oldTopCamel;
-            OnCamelStackLandedOn(newTrackSpace);
-        }
+        OnCamelStackLandedOn(newTrackSpace);
     }
 
     private void OnCamelStackLandedOn(TrackSpace newTrackSpace)

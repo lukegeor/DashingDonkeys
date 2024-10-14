@@ -4,11 +4,6 @@ namespace Test;
 
 public class CamelTests
 {
-    public class TestCamel : Camel
-    {
-        public TestCamel(Colors color, TrackSpace trackSpace) : base(color, trackSpace) {}
-    }
-
     private Colors _color;
     private TrackSpace _trackSpace;
     private Camel _sut;
@@ -17,7 +12,7 @@ public class CamelTests
     {
         _trackSpace = new TrackSpace();
         _color = Colors.Red;
-        _sut = new TestCamel(_color, _trackSpace);
+        _sut = new RegularCamel(_color, _trackSpace);
         _trackSpace.BottomCamel = _sut;
     }
 
